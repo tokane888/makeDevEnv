@@ -8,7 +8,7 @@ MINIKUBE_VER=1.6.2
 
 check_virtualization_support() {
   if ! grep -E --color 'vmx|svm' /proc/cpuinfo; then
-    echo Virtualization is not supported on this machine.
+    echo Virtualization is not enabled on this machine.
     exit 1
   fi
 }
