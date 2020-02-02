@@ -2,6 +2,10 @@
 
 set -eux
 
+# minikubeのバージョンは下記一覧から選択
+# https://github.com/kubernetes/minikube/releases
+MINIKUBE_VER=1.6.2
+
 check_virtualization_support() {
   if ! grep -E --color 'vmx|svm' /proc/cpuinfo; then
     echo Virtualization is not supported on this machine.
@@ -29,10 +33,21 @@ add_kubectl_completion() {
   kubectl completion bash >/etc/bash_completion.d/kubectl
 }
 
+install_minikube() {
+  wget https://github.com/kubernetes/minikube/releases/download/v$MINIKUBE_VER/minikube_$MINIKUBE_VER.deb
+  dpkg -i minikube_$MINIKUBE_VER.deb
+}
+
+cleanup() {
+  rm -f minikube_$MINIKUBE_VER.deb
+}
+
 main() {
   check_virtualization_support
   check_root
 
   install_kubectl
   add_kubectl_completion
+
+  cleanup
 }
