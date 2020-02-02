@@ -29,6 +29,8 @@ check_root() {
 install_kubectl() {
   apt-get install -y apt-transport-https
   curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+  # "xenial"(ubuntu 16.04のcodename)が含まれるが、正常にインストール可能
+  # 2020/2/3時点では、xenial => bionicに置き換えるとパッケージインストール時に見つからずエラーになる
   echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
   apt-get update -y
   apt-get install -y kubectl
