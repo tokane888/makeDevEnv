@@ -25,9 +25,14 @@ install_kubectl() {
   sudo apt-get install -y kubectl
 }
 
+add_kubectl_completion() {
+  kubectl completion bash >/etc/bash_completion.d/kubectl
+}
+
 main() {
   check_virtualization_support
   check_root
 
   install_kubectl
+  add_kubectl_completion
 }
