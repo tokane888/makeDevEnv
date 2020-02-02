@@ -26,6 +26,23 @@ check_root() {
   fi
 }
 
+install_docker() {
+  apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+  apt-key fingerprint 0EBFCD88
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+  apt-get update -y
+  # バージョン指定が必要な場合は下記に従って調整
+  # https://docs.docker.com/install/linux/docker-ce/ubuntu#install-docker-engine---community-1
+  apt-get install -y docker-ce docker-ce-cli containerd.io
+}
+
 install_kubectl() {
   apt-get install -y apt-transport-https
   curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
@@ -54,6 +71,7 @@ main() {
   apt-get update -y
   check_virtualization_support
 
+  install_docker
   install_kubectl
   add_kubectl_completion
   install_minikube
